@@ -1,2 +1,0 @@
-const { json, requireAdmin } = require('./_helpers');
-module.exports = async (req,res)=>{ if(!requireAdmin(req,res)) return; json(res,200,{ok:true,env:{ADMIN_PASSWORD:!!process.env.ADMIN_PASSWORD,YOUTUBE_API_KEY:!!process.env.YOUTUBE_API_KEY,GOOGLE_CLIENT_ID:!!process.env.GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET:!!process.env.GOOGLE_CLIENT_SECRET,YOUTUBE_REFRESH_TOKEN:!!process.env.YOUTUBE_REFRESH_TOKEN,ANTHROPIC_API_KEY:!!process.env.ANTHROPIC_API_KEY,ALLOWED_ORIGINS:!!process.env.ALLOWED_ORIGINS}}); };

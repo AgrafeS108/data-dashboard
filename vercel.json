@@ -1,8 +1,6 @@
 {
-  "rewrites": [
-    {
-      "source": "/admin",
-      "destination": "/admin.html"
-    }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }

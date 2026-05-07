@@ -4023,6 +4023,94 @@ html[data-ftv-theme="dark"] input, html[data-ftv-theme="dark"] select { backgrou
 @media(max-width:390px){.ftv-mobile-app{--top:56px;--sports:54px;--nav:66px}.ftv-m-brand{display:none}.ftv-m-topbar{grid-template-columns:1fr 42px}.ftv-m-stat-value{font-size:23px}.ftv-m-detail-stats{grid-template-columns:1fr}.ftv-m-type-pills{grid-template-columns:1fr 1fr}.ftv-m-detail-titlebox h1{font-size:22px}.ftv-m-comp-right{min-width:76px}.ftv-m-nav-label{font-size:9px}}
 </style>
 
+<style id="ftv-v71-mobile-scroll-fix">
+@media (max-width: 768px) {
+  html,
+  body {
+    width: 100% !important;
+    min-height: 100% !important;
+    height: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  body {
+    position: relative !important;
+    touch-action: pan-y !important;
+  }
+
+  #root,
+  .app,
+  .ftv-app,
+  .ftv-dashboard,
+  .ftv-main,
+  .ftv-main-shell,
+  .mobile-dashboard-app,
+  .mobile-app,
+  .mobile-shell,
+  [class*="MobileDashboard"],
+  [class*="mobile-dashboard"],
+  [class*="mobile-app"] {
+    min-height: 100dvh !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .mobile-page,
+  .mobile-content,
+  .mobile-body,
+  .mobile-tab-content,
+  .mobile-scroll,
+  .ftv-mobile-content,
+  .ftv-mobile-body,
+  .ftv-content,
+  .tab-content,
+  [class*="mobile-content"],
+  [class*="mobile-body"],
+  [class*="tab-content"] {
+    height: auto !important;
+    min-height: calc(100dvh - 132px) !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .mobile-bottom-nav,
+  .ftv-mobile-bottom-nav,
+  [class*="bottom-nav"] {
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    z-index: 9999 !important;
+  }
+
+  .mobile-topbar,
+  .ftv-mobile-topbar,
+  [class*="topbar"] {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9998 !important;
+  }
+
+  .mobile-drawer,
+  .settings-drawer,
+  .ftv-settings-drawer,
+  [class*="drawer"] {
+    z-index: 10000 !important;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+</style>
+
 </head>
 <body>
 

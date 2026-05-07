@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" }
+  ],
+  "crons": [
+    { "path": "/api/cron/preload-all", "schedule": "0 5 * * *" }
+  ]
+}

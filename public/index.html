@@ -4266,9 +4266,9 @@ html[data-ftv-theme="dark"] input, html[data-ftv-theme="dark"] select { backgrou
 @media (max-width:760px), (pointer:coarse) and (max-width:920px){
   /* Calendrier : correction du chevauchement des deux champs date. */
   .ftv-m-calendar-sheet{top:50%!important;bottom:auto!important;transform:translateY(-50%)!important;max-height:min(74dvh,620px)!important;padding:22px 16px 18px!important;box-sizing:border-box!important;}
-  .ftv-m-calendar-fields{grid-template-columns:1fr!important;gap:10px!important;width:100%!important;}
+  .ftv-m-calendar-fields{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:10px!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important;}
   .ftv-m-calendar-field,.ftv-m-calendar-field input{min-width:0!important;max-width:100%!important;box-sizing:border-box!important;}
-  .ftv-m-calendar-field input{height:48px!important;font-size:14px!important;padding:0 14px!important;}
+  .ftv-m-calendar-field input{width:100%!important;min-width:0!important;max-width:100%!important;height:48px!important;font-size:12px!important;padding:0 8px!important;box-sizing:border-box!important;text-align:center!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}
   .ftv-m-calendar-presets{grid-template-columns:1fr 1fr!important;}
 
   /* Graphiques : volets par sport + détail des parts par compétition. */

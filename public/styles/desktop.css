@@ -1,0 +1,6 @@
+/* v67 desktop CSS separated intentionally. Keep desktop close to existing product. */
+@media (min-width: 769px) {
+  .ftv-main-tabs { position: relative !important; z-index: 50 !important; }
+  .ftv-copilot-shell { max-width: 100% !important; overflow-x: hidden !important; }
+  .ftv-copilot-kpis { grid-template-columns: repeat(4,minmax(0,1fr)) !important; }
+}

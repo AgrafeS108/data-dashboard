@@ -1,0 +1,213 @@
+@media (max-width: 760px), (pointer: coarse) and (max-width: 920px) {
+  .ftv-m-calendar-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 20000 !important;
+    background: rgba(15, 23, 42, 0.42) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+
+  .ftv-m-calendar-sheet {
+    position: fixed !important;
+    left: 50% !important;
+    top: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: min(88vw, 390px) !important;
+    max-width: min(88vw, 390px) !important;
+    max-height: calc(100dvh - 190px) !important;
+    padding: 22px 18px 18px !important;
+    border-radius: 28px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    background: #fff !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    box-shadow: 0 28px 90px rgba(15, 23, 42, 0.28) !important;
+    z-index: 20001 !important;
+  }
+
+  .ftv-m-calendar-head {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .ftv-m-calendar-kicker {
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+    color: #9ca3af !important;
+    margin-bottom: 6px !important;
+  }
+
+  .ftv-m-calendar-head h2 {
+    margin: 0 !important;
+    font-size: 34px !important;
+    line-height: 0.95 !important;
+    letter-spacing: -0.06em !important;
+    font-weight: 950 !important;
+    color: #08090f !important;
+  }
+
+  .ftv-m-calendar-close {
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 999px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid rgba(15, 23, 42, 0.10) !important;
+    background: rgba(248, 250, 252, 0.94) !important;
+    color: #111827 !important;
+    font-size: 24px !important;
+    font-weight: 900 !important;
+  }
+
+  .ftv-m-calendar-fields {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: 12px !important;
+    row-gap: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 0 18px !important;
+  }
+
+  .ftv-m-calendar-field {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .ftv-m-calendar-field label {
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+    color: #9ca3af !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ftv-m-calendar-field input {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(15, 23, 42, 0.10) !important;
+    background: #fff !important;
+    padding: 0 6px !important;
+    margin: 0 !important;
+    font-size: 11.5px !important;
+    line-height: 48px !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.04em !important;
+    text-align: center !important;
+    color: #08090f !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+
+  .ftv-m-calendar-presets {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 0 0 22px !important;
+  }
+
+  .ftv-m-calendar-presets button {
+    width: 100% !important;
+    height: 46px !important;
+    min-width: 0 !important;
+    border-radius: 16px !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(15, 23, 42, 0.10) !important;
+    background: #fff !important;
+    font-size: 12.5px !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.035em !important;
+    color: #08090f !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .ftv-m-calendar-apply-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+
+  .ftv-m-calendar-cancel,
+  .ftv-m-calendar-apply {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 54px !important;
+    border-radius: 18px !important;
+    box-sizing: border-box !important;
+    padding: 0 10px !important;
+    font-size: 14px !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.03em !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .ftv-m-calendar-cancel {
+    border: 1px solid rgba(15, 23, 42, 0.10) !important;
+    background: #fff !important;
+    color: #9ca3af !important;
+  }
+
+  .ftv-m-calendar-apply {
+    border: 0 !important;
+    background: #e10023 !important;
+    color: #fff !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .ftv-m-calendar-sheet {
+    width: min(92vw, 360px) !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .ftv-m-calendar-fields {
+    column-gap: 8px !important;
+  }
+
+  .ftv-m-calendar-field input {
+    height: 46px !important;
+    font-size: 10.5px !important;
+    padding: 0 4px !important;
+  }
+
+  .ftv-m-calendar-presets button {
+    font-size: 11.5px !important;
+  }
+}

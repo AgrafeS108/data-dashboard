@@ -1,0 +1,83 @@
+/* v72: preserve the v71 mobile app design, but make the central body the ONLY vertical scroll area.
+   No visual reshaping of the bottom nav; this only fixes the scroll model. */
+@media (max-width:760px), (pointer:coarse) and (max-width:920px){
+  html, body, #root{
+    width:100% !important;
+    height:100% !important;
+    min-height:100dvh !important;
+    overflow:hidden !important;
+    overscroll-behavior:none !important;
+    background:var(--bg) !important;
+  }
+
+  .ftv-mobile-app{
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    position:fixed !important;
+    inset:0 !important;
+    width:100vw !important;
+    height:100dvh !important;
+    min-height:100dvh !important;
+    max-height:100dvh !important;
+    display:block !important;
+    overflow:hidden !important;
+    touch-action:auto !important;
+    background:var(--bg) !important;
+  }
+
+  .ftv-m-topbar{
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    height:calc(var(--top) + var(--safe-top)) !important;
+    z-index:120 !important;
+  }
+
+  .ftv-m-sports-rail{
+    position:fixed !important;
+    top:calc(var(--top) + var(--safe-top)) !important;
+    left:0 !important;
+    right:0 !important;
+    height:var(--sports) !important;
+    z-index:110 !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    touch-action:pan-x !important;
+  }
+
+  .ftv-m-body{
+    position:fixed !important;
+    left:0 !important;
+    right:0 !important;
+    top:calc(var(--top) + var(--safe-top) + var(--sports)) !important;
+    bottom:calc(var(--nav) + var(--safe-bottom)) !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow-y:scroll !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior-y:contain !important;
+    touch-action:pan-y !important;
+    padding:12px 12px 18px !important;
+    background:var(--bg) !important;
+  }
+
+  .ftv-m-body > *{
+    max-width:100% !important;
+  }
+
+  .ftv-m-bottom-nav{
+    position:fixed !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    z-index:130 !important;
+    /* keep the v71 shape exactly */
+  }
+
+  .ftv-m-drawer-backdrop{z-index:20000 !important;}
+  .ftv-m-drawer{z-index:20001 !important;}
+}

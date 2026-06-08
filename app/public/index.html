@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>france.tv — YouTube Analytics</title>
+<!-- FTV Dashboard v120 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="/assets/js/search/classification-engine.js"></script>
+<script src="/assets/js/search/search-engine.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="/modules/syntheticMediaData.js"></script>
+<script src="/modules/predictionEngine.js"></script>
+<script src="/modules/aiMediaCopilot.js"></script>
+
+<script src="/assets/js/client/theme-boot.js"></script>
+<link rel="stylesheet" href="/assets/css/client/base.css">
+<template id="__bundler_thumbnail" data-bg-color="#F4F4F5">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#F4F4F5"/>
+    <rect x="0" y="0" width="240" height="800" fill="#FFFFFF"/>
+    <rect x="16" y="20" width="48" height="20" rx="4" fill="#E2001A"/>
+    <circle cx="90" cy="100" r="38" fill="none" stroke="#E2001A" stroke-width="7"/>
+    <circle cx="90" cy="100" r="38" fill="none" stroke="#0B3F7A" stroke-width="7" stroke-dasharray="60 239" stroke-dashoffset="60"/>
+    <rect x="16" y="160" width="208" height="10" rx="5" fill="#EEEEEF"/>
+    <rect x="16" y="180" width="160" height="10" rx="5" fill="#EEEEEF"/>
+    <rect x="16" y="200" width="180" height="10" rx="5" fill="#EEEEEF"/>
+    <rect x="16" y="220" width="140" height="10" rx="5" fill="#EEEEEF"/>
+    <rect x="260" y="0" width="940" height="80" fill="#FFFFFF"/>
+    <rect x="280" y="20" width="160" height="40" rx="8" fill="#F4F4F5"/>
+    <rect x="460" y="20" width="120" height="40" rx="8" fill="#F4F4F5"/>
+    <rect x="600" y="20" width="120" height="40" rx="8" fill="#F4F4F5"/>
+    <rect x="260" y="100" width="940" height="700" fill="#F4F4F5"/>
+    <rect x="280" y="120" width="900" height="50" rx="6" fill="#FFFFFF"/>
+    <rect x="280" y="180" width="900" height="50" rx="6" fill="#FFFFFF"/>
+    <rect x="280" y="240" width="900" height="50" rx="6" fill="#FFFFFF"/>
+    <rect x="280" y="300" width="900" height="50" rx="6" fill="#FFFFFF"/>
+    <rect x="280" y="120" width="4" height="50" rx="2" fill="#E2001A"/>
+    <rect x="280" y="180" width="4" height="50" rx="2" fill="#0B3F7A"/>
+    <rect x="280" y="240" width="4" height="50" rx="2" fill="#1A5C32"/>
+  </svg>
+</template>
+
+<!-- FTV RESPONSIVE TOUCH LAYER v57 — mobile/tablette sans changer l'UI desktop -->
+<link rel="stylesheet" href="/assets/css/client/responsive-touch-v57.css">
+
+
+
+<!-- FTV MOBILE APP POLISH v61 — vrais écrans tactiles + anti-débordements -->
+<link rel="stylesheet" href="/assets/css/client/mobile-app-polish-v61.css">
+
+
+<link rel="stylesheet" href="/assets/css/client/copilot-responsive-v62.css">
+
+<link rel="stylesheet" href="/assets/css/client/product-polish-v64.css">
+
+<link rel="stylesheet" href="/assets/css/client/mobile-first-hotfix-v66.css">
+
+<link rel="stylesheet" href="/styles/desktop.css" media="(min-width: 769px)">
+<link rel="stylesheet" href="/styles/mobile.css" media="(max-width: 768px)">
+<script src="/assets/js/client/device-boot.js"></script>
+
+<link rel="stylesheet" href="/assets/css/client/gmail-mobile-shell-v68.css">
+
+
+<link rel="stylesheet" href="/assets/css/client/mobile-clean-final-v70.css">
+
+<link rel="stylesheet" href="/assets/css/client/mobile-rebuild-app-v71.css">
+
+
+
+<link rel="stylesheet" href="/assets/css/client/mobile-scroll-fix-v72.css">
+
+
+<link rel="stylesheet" href="/assets/css/client/mobile-visual-restoration-v74.css">
+
+
+<link rel="stylesheet" href="/assets/css/client/mobile-calendar-search-v75.css">
+
+
+<link rel="stylesheet" href="/assets/css/client/mobile-graph-prevision-calendar-v76.css">
+
+
+<link rel="stylesheet" href="/assets/css/client/calendar-clean-final-v78.css">
+
+<script src="/assets/js/client/auth-checking-boot.js"></script>
+<link rel="stylesheet" href="/assets/css/client/auth-styles-v87.css">
+
+<link rel="stylesheet" href="/assets/css/client/copilot-settings-responsive-v92.css">
+
+<link rel="stylesheet" href="/assets/css/client/operational-intelligence-v94.css">
+
+
+<link rel="stylesheet" href="/assets/css/client/password-auth-ui-v95.css">
+
+<link rel="stylesheet" href="/assets/css/client/client-platform-v98.css">
+</head>
+<body>
+<div id="ftvAuthGate" data-mode="login" aria-label="Connexion à la plateforme france.tv analytics">
+  <div class="ftv-auth-shell">
+    <section class="ftv-auth-hero" aria-hidden="true">
+      <div>
+        <div class="ftv-auth-brand"><div class="ftv-auth-logo">france.tv</div><div class="ftv-auth-brand-title">YouTube Analytics</div></div>
+        <h2 class="ftv-auth-title">Pilote tes chaînes <span>YouTube</span> avec précision.</h2>
+        <p class="ftv-auth-subtitle">Un environnement média premium pour lire, comparer et anticiper les performances des chaînes France Télévisions.</p>
+      </div>
+      <div class="ftv-auth-points">
+        <div class="ftv-auth-point"><b>Analyse multi-chaînes</b><span>Compare les performances par chaîne, sport, compétition et période.</span></div>
+        <div class="ftv-auth-point"><b>Copilot média</b><span>Détecte les alertes, opportunités, comparatifs et projections utiles.</span></div>
+        <div class="ftv-auth-point"><b>Exports & reporting</b><span>Transforme les données en tableaux, briefs et analyses exploitables.</span></div>
+      </div>
+    </section>
+    <section class="ftv-auth-card">
+      <h1 id="ftvAuthTitle">Connexion</h1>
+      <p id="ftvAuthSubtitle">Entre tes identifiants pour accéder au dashboard.</p>
+      <form id="ftvAuthForm" autocomplete="on">
+        <div class="ftv-auth-field"><label for="ftvAuthEmail">Email</label><input id="ftvAuthEmail" name="email" type="email" placeholder="prenom.nom@francetv.fr" autocomplete="email" required></div>
+        <div class="ftv-auth-field"><label for="ftvAuthPassword">Mot de passe</label><input id="ftvAuthPassword" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required></div>
+        <div class="ftv-auth-row"><label class="ftv-auth-check"><input id="ftvAuthRemember" type="checkbox" checked> rester connecté</label><button type="button" id="ftvForgotPasswordBtn" class="ftv-auth-link-btn">Mot de passe oublié ?</button></div>
+        <button class="ftv-auth-submit" id="ftvAuthSubmit" type="submit">Se connecter</button>
+        <div class="ftv-auth-message" id="ftvAuthMessage" role="status" aria-live="polite">Vérification de la session…</div>
+      </form>
+      <div id="ftvRecoveryPanel" class="ftv-auth-reset-panel" hidden>
+        <div class="ftv-auth-reset-title">Choisir un nouveau mot de passe</div>
+        <p>Entre un nouveau mot de passe. Il sera enregistré uniquement par Supabase Auth sous forme sécurisée, jamais visible dans la console admin.</p>
+        <div class="ftv-auth-field"><label for="ftvRecoveryPassword">Nouveau mot de passe</label><input id="ftvRecoveryPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password"></div>
+        <div class="ftv-auth-field"><label for="ftvRecoveryPassword2">Confirmation</label><input id="ftvRecoveryPassword2" type="password" placeholder="Confirmer le mot de passe" autocomplete="new-password"></div>
+        <button class="ftv-auth-submit" id="ftvRecoverySubmit" type="button">Mettre à jour le mot de passe</button>
+      </div>
+      <div class="ftv-auth-note ftv-auth-client-brief">
+        <b>Dashboard privé France Télévisions</b><br>Connecte-toi pour accéder aux performances, comparatifs et recommandations opérationnelles.
+      </div>
+    </section>
+  </div>
+</div>
+<script src="/assets/js/client/auth-gate.js"></script>
+
+
+
+<div id="ftvPasswordModalBackdrop" class="ftv-password-modal-backdrop" aria-hidden="true">
+  <section class="ftv-password-modal" role="dialog" aria-modal="true" aria-labelledby="ftvPasswordModalTitle">
+    <div class="ftv-password-modal-head">
+      <div><h2 id="ftvPasswordModalTitle">Changer le mot de passe</h2><p>Le nouveau mot de passe sera enregistré par Supabase Auth sous forme sécurisée. Il ne sera jamais visible par l’administrateur.</p></div>
+      <button type="button" class="ftv-password-close" id="ftvPasswordModalClose" aria-label="Fermer">×</button>
+    </div>
+    <div class="ftv-password-field"><label for="ftvPasswordNew">Nouveau mot de passe</label><input id="ftvPasswordNew" type="password" autocomplete="new-password" placeholder="8 caractères minimum"></div>
+    <div class="ftv-password-field"><label for="ftvPasswordNew2">Confirmation</label><input id="ftvPasswordNew2" type="password" autocomplete="new-password" placeholder="Confirmer le mot de passe"></div>
+    <div id="ftvPasswordModalMsg" class="ftv-password-msg" role="status" aria-live="polite"></div>
+    <div class="ftv-password-actions"><button type="button" class="ftv-password-cancel" id="ftvPasswordCancel">Annuler</button><button type="button" class="ftv-password-save" id="ftvPasswordSave">Enregistrer</button></div>
+  </section>
+</div>
+<script src="/assets/js/client/password-modal.js"></script>
+
+<script src="/assets/js/client/role-ui-guard.js"></script>
+
+<div id="root"></div>
+<script src="/assets/js/client/client-app.js"></script>

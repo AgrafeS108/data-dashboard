@@ -1,0 +1,85 @@
+/* V64 — responsive premium, dark mode, Copilot desktop fix, menu/admin cleanup */
+html[data-ftv-theme="dark"] {
+  --bg:#080A0F; --bg2:#0F131B; --bg3:#141A24; --bg4:#1B2431;
+  --border:rgba(226,232,240,0.085); --border2:rgba(226,232,240,0.16);
+  --text:#F5F7FB; --text2:rgba(226,232,240,0.72); --text3:rgba(203,213,225,0.50);
+  --red-light:rgba(226,0,26,.16); --blue-light:rgba(96,165,250,.16);
+}
+html[data-ftv-theme="dark"] body, html[data-ftv-theme="dark"] #root { background: var(--bg) !important; color: var(--text) !important; }
+html[data-ftv-theme="dark"] .ftv-copilot-shell { background: radial-gradient(circle at 0% 0%,rgba(226,0,26,.16),transparent 30%), radial-gradient(circle at 100% 0%,rgba(96,165,250,.14),transparent 30%), var(--bg) !important; }
+html[data-ftv-theme="dark"] .ftv-copilot-panel, html[data-ftv-theme="dark"] .ftv-copilot-scenario { background: linear-gradient(180deg,var(--bg2),var(--bg3)) !important; color: var(--text) !important; border-color: var(--border) !important; }
+html[data-ftv-theme="dark"] .ftv-copilot-pill { background: var(--bg4) !important; color: var(--text2) !important; }
+html[data-ftv-theme="dark"] table, html[data-ftv-theme="dark"] th, html[data-ftv-theme="dark"] td { border-color: var(--border) !important; }
+html[data-ftv-theme="dark"] input, html[data-ftv-theme="dark"] select { background: var(--bg3) !important; color: var(--text) !important; border-color: var(--border2) !important; }
+
+/* V97 — dark mode flattening: no stray light glow in the top-left area. */
+html[data-ftv-theme="dark"] .ftv-app-layout,
+html[data-ftv-theme="dark"] .ftv-sidebar,
+html[data-ftv-theme="dark"] .ftv-sidebar > div:first-child,
+html[data-ftv-theme="dark"] .ftv-main-shell,
+html[data-ftv-theme="dark"] .ftv-main-tabs,
+html[data-ftv-theme="dark"] .ftv-kpi-toolbar {
+  background: var(--bg2) !important;
+}
+html[data-ftv-theme="dark"] .ftv-app-layout { background: var(--bg) !important; }
+html[data-ftv-theme="dark"] .ftv-sidebar { background: #0B0F16 !important; }
+html[data-ftv-theme="dark"] .ftv-sidebar > div:first-child { background: #0B0F16 !important; }
+html[data-ftv-theme="dark"] .ftv-main-shell { background: #080A0F !important; }
+html[data-ftv-theme="dark"] .ftv-main-tabs,
+html[data-ftv-theme="dark"] .ftv-kpi-toolbar { background: #0C1119 !important; }
+
+.ftv-analytics-view > div:first-child { display:grid !important; }
+.ftv-analytics-view { padding-top: 18px !important; }
+.ftv-video-row a:hover { color: var(--red) !important; }
+.ftv-video-row:hover { box-shadow: inset 3px 0 0 var(--red); }
+
+.ftv-copilot-shell { height:100% !important; max-height:100% !important; overflow-y:auto !important; overflow-x:hidden !important; padding-bottom:48px !important; }
+.ftv-copilot-hero, .ftv-copilot-panel, .ftv-copilot-card { min-width:0 !important; }
+.ftv-copilot-grid { align-items:start !important; }
+.ftv-copilot-row > * { min-width:0 !important; }
+
+@media (max-width: 1320px) {
+  .ftv-copilot-hero { grid-template-columns:1fr !important; }
+  .ftv-copilot-grid { grid-template-columns:1fr !important; }
+  .ftv-copilot-kpis { grid-template-columns: repeat(2,minmax(0,1fr)) !important; }
+}
+
+@media (max-width: 980px), (pointer: coarse) {
+  html, body { height:auto !important; min-height:100%; overflow:auto !important; max-width:100% !important; }
+  #root { height:auto !important; min-height:100dvh !important; overflow:visible !important; }
+  #root > div { height:auto !important; min-height:100dvh !important; width:100% !important; overflow:visible !important; display:block !important; }
+  #root > div > div:first-child { display:none !important; }
+  #root > div > div:nth-child(2) { width:100% !important; min-width:0 !important; height:auto !important; min-height:100dvh !important; overflow:visible !important; display:block !important; }
+  #root > div > div:nth-child(2) > div:first-child {
+    position:sticky !important; top:0 !important; z-index:850 !important; padding:8px 10px !important; gap:4px !important;
+    overflow-x:auto !important; overflow-y:hidden !important; white-space:nowrap !important; scrollbar-width:none !important;
+    box-shadow:0 10px 30px rgba(15,23,42,.10) !important; align-items:center !important;
+  }
+  #root > div > div:nth-child(2) > div:first-child::-webkit-scrollbar { display:none !important; }
+  #root > div > div:nth-child(2) > div:first-child button { min-height:40px !important; border-radius:12px !important; flex:0 0 auto !important; padding:8px 12px !important; font-size:12px !important; }
+  #root > div > div:nth-child(2) > div:first-child > div:last-child {
+    position:sticky !important; right:0 !important; margin-left:8px !important; padding-left:8px !important; background:linear-gradient(90deg,transparent,var(--bg2) 30%) !important; z-index:860 !important;
+  }
+  #root > div > div:nth-child(2) > div:nth-child(3) {
+    display:grid !important; grid-template-columns:1fr 1fr !important; gap:10px !important; padding:12px !important; overflow:visible !important;
+  }
+  #root > div > div:nth-child(2) > div:nth-child(3) > div { min-width:0 !important; width:100% !important; }
+  #root > div > div:nth-child(2) > div:nth-child(4) { height:auto !important; min-height:60vh !important; overflow:visible !important; }
+  .ftv-analytics-view, .ftv-copilot-shell { height:auto !important; min-height:calc(100dvh - 80px) !important; padding:14px 12px 96px !important; overflow:visible !important; }
+  .ftv-copilot-hero { width:100% !important; grid-template-columns:1fr !important; border-radius:22px !important; padding:18px !important; }
+  .ftv-copilot-kpis { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+  .ftv-copilot-grid { grid-template-columns:1fr !important; gap:12px !important; }
+  .ftv-copilot-panel { border-radius:20px !important; padding:14px !important; overflow:hidden !important; }
+  .ftv-copilot-row { grid-template-columns:44px minmax(0,1fr) !important; }
+  .ftv-copilot-score { grid-column:1 / -1 !important; margin-left:54px !important; font-size:20px !important; }
+  .ftv-video-row { padding:10px 12px !important; gap:8px !important; }
+  .ftv-video-row a, .ftv-video-row span[title] { white-space:normal !important; line-height:1.25 !important; }
+}
+
+@media (max-width: 560px) {
+  #root > div > div:nth-child(2) > div:nth-child(3) { grid-template-columns:1fr 1fr !important; padding:10px !important; }
+  .ftv-copilot-kpis { grid-template-columns:1fr !important; }
+  .ftv-copilot-hero h2 { font-size:25px !important; line-height:1.05 !important; }
+  .ftv-copilot-card { padding:12px !important; }
+  .ftv-analytics-view table { min-width:760px !important; }
+}

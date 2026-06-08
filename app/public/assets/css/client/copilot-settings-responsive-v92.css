@@ -1,4 +1,0 @@
-@media (max-width: 980px) {
-  .ftv-copilot-settings > div:nth-child(2),
-  .ftv-copilot-settings > div:nth-child(3) { grid-template-columns: 1fr !important; }
-}

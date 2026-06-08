@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>france.tv — YouTube Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <section id="loginScreen" class="login-screen" hidden>
+    <div class="login-hero">
+      <div class="brand"><span class="brand-logo">france.tv</span><span>YouTube Analytics</span></div>
+      <h1>Dashboard média opérationnel</h1>
+      <p>Lecture claire des performances YouTube, par chaîne, sport, catégorie, compétition, type de contenu et période.</p>
+      <div class="login-points">
+        <span>Source admin unique</span>
+        <span>Classification serveur</span>
+        <span>Analytics intégrées</span>
+      </div>
+    </div>
+    <form id="loginForm" class="login-card">
+      <h2>Connexion</h2>
+      <label>Email<input id="loginEmail" type="email" autocomplete="email" required></label>
+      <label>Mot de passe<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+      <button type="submit">Se connecter</button>
+      <p id="loginMessage" class="form-message">Vérification de la session…</p>
+    </form>
+  </section>
+
+  <main id="app" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <div class="brand-logo">france.tv</div>
+        <div><b id="channelTitle">SPORT</b><span>YouTube Analytics</span></div>
+      </div>
+      <div class="donut-card">
+        <div class="donut" id="viewsDonut"><span id="sidebarViews">—</span><small>vues</small></div>
+        <div class="donut-legend"><b id="sidebarVideos">—</b><span>vidéos</span><b id="sidebarShorts">—</b><span>shorts</span><b id="sidebarLives">—</b><span>lives</span></div>
+      </div>
+      <div id="channelList" class="channel-list"></div>
+      <div class="sidebar-foot"><button id="logoutBtn" class="ghost small">Déconnexion</button><a href="/admin.html" class="ghost small">Admin</a></div>
+    </aside>
+
+    <section class="workspace">
+      <header class="topbar">
+        <nav id="tabs" class="tabs">
+          <button data-tab="figures" class="active">📊 Chiffres</button>
+          <button data-tab="graphs">📈 Graphiques</button>
+          <button data-tab="forecast">🔭 Prévisions</button>
+          <button data-tab="copilot">🧠 Copilot + Alertes</button>
+          <button data-tab="analytics">🧬 Analytics</button>
+        </nav>
+        <button id="menuBtn" class="icon-btn" aria-label="Menu">☰</button>
+      </header>
+
+      <section class="filters-panel">
+        <div class="kpi-grid" id="kpiGrid"></div>
+        <div class="controls-row">
+          <div class="segmented" id="typeFilter">
+            <button data-type="all" class="active">Tout <span id="countAll">0</span></button>
+            <button data-type="video">Vidéos <span id="countVideo">0</span></button>
+            <button data-type="short">Shorts <span id="countShort">0</span></button>
+            <button data-type="live">Lives <span id="countLive">0</span></button>
+          </div>
+          <div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Rechercher une vidéo, compétition, sportif, catégorie…"></div>
+          <select id="yearSelect" class="select"></select>
+          <button id="exportBtn" class="primary small">Exporter</button>
+        </div>
+      </section>
+
+      <section id="statusBanner" class="status-banner" hidden></section>
+
+      <section id="view-figures" class="view active">
+        <div class="split-layout">
+          <aside class="taxonomy-panel">
+            <div class="panel-title">Classification</div>
+            <div id="taxonomyList" class="taxonomy-list"></div>
+          </aside>
+          <section class="content-panel">
+            <div id="selectionHeader" class="selection-header"></div>
+            <div class="video-table-wrap">
+              <table class="video-table">
+                <thead><tr><th>Type</th><th>Titre</th><th>Sport / catégorie</th><th>Compétition</th><th>Date</th><th>Durée</th><th>Vues</th><th>Confiance</th></tr></thead>
+                <tbody id="videoRows"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-graphs" class="view">
+        <div class="dashboard-grid two">
+          <article class="card"><h2>Part par sport / catégorie</h2><div id="sportChart" class="bar-chart"></div></article>
+          <article class="card"><h2>Part par compétition</h2><div id="competitionChart" class="bar-chart"></div></article>
+          <article class="card wide"><h2>Mix vidéo / short / live</h2><div id="typeChart" class="bar-chart horizontal"></div></article>
+        </div>
+      </section>
+
+      <section id="view-forecast" class="view">
+        <article class="card ai-card">
+          <div class="card-head"><div><h2>Prévisions n+1 avec Claude</h2><p>La réponse reste affichée et sauvegardée même lorsque tu changes d’onglet.</p></div><button id="forecastBtn" class="primary">Générer / actualiser</button></div>
+          <div id="forecastOutput" class="ai-output">Aucune prévision générée pour cette sélection.</div>
+        </article>
+      </section>
+
+      <section id="view-copilot" class="view">
+        <div class="dashboard-grid two">
+          <article class="card"><h2>Alertes opérationnelles</h2><div id="alertList" class="insight-list"></div></article>
+          <article class="card"><h2>Comparer deux évènements</h2><div class="compare-controls"><select id="compareA"></select><select id="compareB"></select></div><div id="compareOutput" class="compare-output"></div></article>
+          <article class="card wide ai-card"><div class="card-head"><div><h2>Conseils programmation / éditorial / publication</h2><p>Analyse à partir des données réellement filtrées.</p></div><button id="copilotBtn" class="primary">Demander à Claude</button></div><div id="copilotOutput" class="ai-output">Sélectionne une période puis lance l’analyse.</div></article>
+        </div>
+      </section>
+
+      <section id="view-analytics" class="view">
+        <div id="analyticsGrid" class="dashboard-grid two"></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="loader" class="loader"><div></div><p>Lecture des données validées dans la console admin…</p></div>
+  <script src="/assets/js/app.js"></script>
+</body>
+</html>

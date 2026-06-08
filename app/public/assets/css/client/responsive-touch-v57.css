@@ -1,0 +1,79 @@
+  @media (pointer: coarse), (max-width: 1024px) {
+    html, body { height: auto !important; min-height: 100%; overflow: auto !important; overscroll-behavior-y: contain; }
+    body { -webkit-text-size-adjust: 100%; touch-action: manipulation; }
+    #root { height: auto !important; min-height: 100dvh; }
+    button, input, select, textarea, a { touch-action: manipulation; }
+    button, a[role="button"] { min-height: 44px !important; }
+    input, select, textarea { min-height: 44px !important; font-size: 16px !important; }
+    #root > div { display: block !important; height: auto !important; min-height: 100dvh !important; overflow: visible !important; background: var(--bg) !important; }
+
+    /* Sidebar desktop transformée en zone compacte tactile */
+    #root > div > div:first-of-type {
+      width: 100% !important; height: auto !important; max-height: none !important;
+      position: sticky !important; top: 0 !important; z-index: 600 !important;
+      border-right: none !important; border-bottom: 1px solid var(--border) !important;
+      overflow: visible !important; box-shadow: 0 10px 28px rgba(15,23,42,.06) !important;
+    }
+    #root > div > div:first-of-type > div:first-child { padding: 10px 12px !important; }
+    #root > div > div:first-of-type > div:first-child > div:first-child { margin-bottom: 8px !important; }
+    #root > div > div:first-of-type > div:first-child select { min-height: 36px !important; font-size: 14px !important; max-width: 170px !important; }
+    #root > div > div:first-of-type > div:first-child svg { max-width: 76px !important; max-height: 76px !important; }
+    #root > div > div:first-of-type > div:nth-child(2) {
+      display: flex !important; flex-direction: row !important; gap: 8px !important;
+      overflow-x: auto !important; overflow-y: hidden !important; -webkit-overflow-scrolling: touch;
+      padding: 8px 12px 10px !important; max-height: 86px !important; flex: 0 0 auto !important;
+      scroll-snap-type: x proximity; background: var(--bg2) !important;
+    }
+    #root > div > div:first-of-type > div:nth-child(2) > * { flex: 0 0 170px !important; min-width: 170px !important; scroll-snap-align: start; }
+    #root > div > div:first-of-type > div:nth-child(2) div { white-space: normal !important; }
+    #root > div > div:first-of-type > div:nth-child(3) { display: none !important; }
+
+    /* Main content */
+    #root > div > div:nth-of-type(2) { min-height: calc(100dvh - 170px) !important; overflow: visible !important; display: flex !important; }
+    #root > div > div:nth-of-type(2) > div:first-child {
+      overflow-x: auto !important; overflow-y: hidden !important; -webkit-overflow-scrolling: touch;
+      padding: 0 10px !important; gap: 4px !important; align-items: center !important;
+    }
+    #root > div > div:nth-of-type(2) > div:first-child button { min-width: max-content !important; padding: 10px 12px !important; font-size: 12px !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(2) {
+      overflow-x: auto !important; overflow-y: hidden !important; -webkit-overflow-scrolling: touch;
+      padding: 10px 12px !important; gap: 8px !important; align-items: stretch !important;
+    }
+    #root > div > div:nth-of-type(2) > div:nth-child(2) > div:not(:last-child) { flex: 0 0 150px !important; min-width: 150px !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(2) > div:last-child { flex: 0 0 auto !important; margin-left: 0 !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(2) button { min-height: 44px !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(3) { flex-wrap: wrap !important; padding: 10px 12px !important; gap: 8px !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(3) > div { margin-left: 0 !important; max-width: none !important; min-width: 0 !important; width: 100% !important; flex: 1 1 100% !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(3) input { height: 44px !important; border-radius: 22px !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(4) { overflow: visible !important; min-height: 62dvh !important; }
+
+    /* Cartes, grilles, tableaux et zones scrollables */
+    [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    [style*="repeat(4"], [style*="repeat(3"], [style*="repeat(2"] { grid-template-columns: 1fr !important; }
+    [style*="max-height"] { max-height: none !important; }
+    table { min-width: 720px; }
+    .table-wrap, [style*="overflow: auto"], [style*="overflow:auto"] { -webkit-overflow-scrolling: touch; }
+    div[style*="position: fixed"][style*="left: 264px"] { left: 10px !important; right: 10px !important; bottom: 10px !important; flex-wrap: wrap !important; gap: 10px !important; }
+    div[style*="width: 315px"] { width: calc(100vw - 24px) !important; max-width: 420px !important; right: 12px !important; left: auto !important; }
+  }
+
+  @media (max-width: 760px) {
+    #root > div > div:first-of-type > div:first-child { padding: 9px 10px !important; }
+    #root > div > div:first-of-type > div:nth-child(2) { max-height: 78px !important; padding: 7px 10px 9px !important; }
+    #root > div > div:first-of-type > div:nth-child(2) > * { flex-basis: 150px !important; min-width: 150px !important; }
+    #root > div > div:nth-of-type(2) > div:nth-child(2) > div:not(:last-child) { flex-basis: 132px !important; min-width: 132px !important; }
+    #root > div > div:nth-of-type(2) > div:first-child button { font-size: 11.5px !important; padding-left: 10px !important; padding-right: 10px !important; }
+    h1, h2, h3 { line-height: 1.05 !important; }
+    [style*="font-size: 30px"], [style*="font-size: 28px"] { font-size: 24px !important; }
+    [style*="padding: 18px 22px"] { padding: 14px 12px !important; }
+    [style*="padding: '18px 22px'"] { padding: 14px 12px !important; }
+  }
+
+  @media (max-width: 520px) {
+    #ftvAuthGate { align-items: flex-start !important; padding: 14px !important; overflow-y: auto !important; }
+    .ftv-auth-shell { width: 100% !important; }
+    .ftv-auth-card { border-radius: 22px !important; padding: 20px !important; }
+    .ftv-auth-card h1 { font-size: 24px !important; }
+    #root > div > div:first-of-type > div:first-child svg { max-width: 62px !important; max-height: 62px !important; }
+    #root > div > div:first-of-type > div:first-child select { font-size: 13px !important; max-width: 145px !important; }
+  }

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>france.tv — Console Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/admin/admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="logo">france.tv</div><div><h1>Console Admin</h1><div class="sub">Pilotage sécurisé : refresh live APIs, stockage admin, projection client</div></div></div>
+    <div class="top-actions"><a class="btn ghost" href="/">Retour dashboard</a><button class="danger" id="logoutTop" onclick="logoutAdmin()" style="display:none">Déconnexion</button></div>
+  </header>
+
+  <main id="loginView" class="login-wrap">
+    <section class="login-card">
+      <div class="lock">⌁</div>
+      <div class="login-title">Accès sécurisé</div>
+      <div class="hint">La console admin est verrouillée par la variable Vercel <b>ADMIN_PASSWORD</b>. Le mot de passe est vérifié côté serveur et la session est stockée en cookie sécurisé.</div>
+      <label class="field-label" for="adminPassword">Mot de passe admin</label>
+      <input id="adminPassword" type="password" placeholder="ADMIN_PASSWORD" autocomplete="current-password" />
+      <div class="row" style="margin-top:16px"><button class="primary" onclick="loginAdmin()">Déverrouiller la console</button><a class="btn ghost" href="/">Retour dashboard</a></div>
+      <div id="loginStatus" class="status warn" style="margin-top:16px">En attente d’authentification.</div>
+    </section>
+  </main>
+
+  <main id="adminApp" class="app shell">
+    <section class="hero">
+      <div class="card">
+        <h2 class="hero-title">Admin Control Center</h2>
+        <div class="hero-text">Console interne pour gérer la connexion YouTube Analytics, vérifier les variables Vercel, tester les APIs et déclencher les snapshots sans exposer de clés côté client.</div>
+        <div class="statusbar" id="heroPills"></div>
+      </div>
+      <div class="card">
+        <div class="title">Sécurité</div>
+        <div class="secure-note">Session active via cookie HttpOnly. Les actions sensibles et OAuth sont protégés par <b>ADMIN_PASSWORD</b>. La page client ne connaît aucune clé API.</div>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="Navigation admin">
+      <button class="tab active" data-tab="overview" onclick="openTab('overview')">Vue d’ensemble</button>
+      <button class="tab" data-tab="users" onclick="openTab('users'); loadUsers();">Utilisateurs</button>
+      <button class="tab" data-tab="access" onclick="openTab('access'); loadUsers();">Accès chaînes</button>
+      <button class="tab" data-tab="usage" onclick="openTab('usage'); loadUsage();">Usage</button>
+      <button class="tab" data-tab="analytics" onclick="openTab('analytics')">YouTube Analytics</button>
+      <button class="tab" data-tab="snapshots" onclick="openTab('snapshots')">Données admin live</button>
+      <button class="tab" data-tab="tests" onclick="openTab('tests')">Tests APIs</button>
+      <button class="tab" data-tab="settings" onclick="openTab('settings')">Variables</button>
+    </nav>
+
+    <section id="tab-overview" class="tab-panel active">
+      <div class="grid">
+        <div class="card span3"><div class="metric"><div class="num" id="envOkCount">—</div><div class="label">Secrets OK</div></div></div>
+        <div class="card span3"><div class="metric"><div class="num">1</div><div class="label">Fonction API</div></div></div>
+        <div class="card span3"><div class="metric"><div class="num">12h</div><div class="label">Session admin</div></div></div>
+        <div class="card span3"><div class="metric"><div class="num">6h</div><div class="label">Cache CDN</div></div></div>
+        <div class="card span8"><div class="title">Statut des services</div><div class="muted">Vérification des variables côté Vercel.</div><div id="statusCards" class="service-grid" style="margin-top:14px"></div></div>
+        <div class="card span4"><div class="title">Actions rapides</div><div class="row" style="margin-top:12px"><button class="secondary" onclick="loadStatus()">Rafraîchir</button><button class="ghost" onclick="openTab('tests')">Voir les logs</button><button class="primary" onclick="startOAuth()">Connecter Analytics</button></div></div>
+      </div>
+    </section>
+
+    <section id="tab-users" class="tab-panel">
+      <div class="grid">
+        <div class="card span4">
+          <div class="title">Créer un accès dashboard</div>
+          <div class="muted">Les mots de passe sont gérés et hashés par Supabase Auth. Ils ne sont jamais stockés en clair dans le dashboard.</div>
+          <label class="field-label">Email</label><input id="newUserEmail" type="email" placeholder="prenom.nom@francetv.fr" autocomplete="off" />
+          <label class="field-label">Nom complet</label><input id="newUserName" type="text" placeholder="Nom affiché" autocomplete="off" />
+          <label class="field-label">Mot de passe temporaire</label><input id="newUserPassword" type="password" placeholder="Minimum 8 caractères" autocomplete="new-password" />
+          <label class="field-label">Rôle</label><select id="newUserRole" class="role-select" style="width:100%;height:48px"><option value="viewer">Viewer — lecture seule</option><option value="editor">Editor — analyses / exports</option><option value="admin">Admin — console + utilisateurs</option></select>
+          <div class="row" style="margin-top:16px"><button class="primary" onclick="createUser()">Créer l’utilisateur</button><button class="ghost" onclick="loadUsers()">Rafraîchir</button></div>
+          <div id="usersStatus" class="status warn" style="margin-top:14px">Configure Supabase puis crée tes accès.</div>
+        </div>
+        <div class="card span8">
+          <div class="title">Utilisateurs autorisés</div>
+          <div class="muted">Pilote les accès au dashboard : rôle, statut, réinitialisation du mot de passe ou suppression.</div>
+          <div class="user-table-wrap" style="margin-top:14px;max-height:620px">
+            <table class="user-table"><thead><tr><th>Email</th><th>Nom</th><th>Rôle</th><th>Statut</th><th>Chaînes</th><th>Dernière connexion</th><th>Actions</th></tr></thead><tbody id="usersTable"><tr><td colspan="7">Aucun chargement lancé.</td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="tab-access" class="tab-panel">
+      <div class="grid">
+        <div class="card span12">
+          <div class="title">Permissions par chaîne</div>
+          <div class="muted">Si aucun canal n’est coché, l’utilisateur a accès à toutes les chaînes. Coche uniquement les chaînes autorisées pour limiter un client.</div>
+          <div id="accessStatus" class="status warn" style="margin-top:12px">Charge les utilisateurs pour modifier les permissions.</div>
+          <div id="accessList" style="display:grid;gap:12px;margin-top:14px"></div>
+        </div>
+      </div>
+    </section>
+    <section id="tab-usage" class="tab-panel">
+      <div class="grid">
+        <div class="card span12">
+          <div class="row" style="justify-content:space-between"><div><div class="title">Historique d’usage</div><div class="muted">Connexions, onglets consultés, changements de chaînes, exports et interactions principales.</div></div><button class="ghost" onclick="loadUsage()">Rafraîchir</button></div>
+          <div id="usageStatus" class="status warn" style="margin-top:12px">Aucun chargement lancé.</div>
+          <div id="usageList" class="usage-list" style="margin-top:14px"></div>
+        </div>
+      </div>
+    </section>
+    <section id="tab-analytics" class="tab-panel">
+      <div class="grid">
+        <div class="card span8"><div class="title">Connexion YouTube Analytics</div><div class="muted">Connecte le compte Google qui a accès au Content Manager / Brand Account. Le callback renvoie le refresh token à placer dans Vercel.</div><div class="row" style="margin-top:16px"><button class="primary" onclick="startOAuth()">Connecter YouTube Analytics</button><button class="secondary" onclick="testContentOwner()">Tester Content Owner</button><a class="btn ghost" href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noreferrer">Google Cloud</a></div><div class="status warn" style="margin-top:14px"><b>v105 :</b> ajoute dans Vercel la variable <b>YOUTUBE_CONTENT_OWNER_ID</b> avec la valeur trouvée dans l’URL YouTube Studio <b>o=...</b>. Ensuite, le backend interroge Analytics en mode <b>contentOwner</b> au lieu de rester sur la chaîne par défaut.</div></div>
+        <div class="card span4"><div class="title">Callback URL</div><div class="muted">À ajouter dans les URI de redirection autorisés.</div><div class="callback" id="callbackUrl" style="margin-top:12px"></div></div>
+      </div>
+    </section>
+
+    <section id="tab-snapshots" class="tab-panel">
+      <div class="grid">
+        <div class="card span6"><div class="title">Refresh live SPORT</div><div class="muted">Va chercher YouTube Data + Analytics, puis stocke le résultat dans Supabase. Le client ne travaille pas.</div><div class="row" style="margin-top:14px"><button class="secondary" onclick="refreshAdminData('sport')">Actualiser SPORT</button><button class="ghost" onclick="testSnapshot()">Lire donnée stockée</button></div></div>
+        <div class="card span6"><div class="title">Refresh global live</div><div class="muted">Actualise toutes les chaînes côté admin. Cette page peut être lente ; le dashboard client reste une projection légère.</div><div class="row" style="margin-top:14px"><button class="primary" onclick="refreshAdminData('all')">Actualiser toutes les données</button><button class="ghost" onclick="testCache()">Statut architecture</button></div></div>
+      </div>
+    </section>
+
+    <section id="tab-tests" class="tab-panel">
+      <div class="grid">
+        <div class="card span4"><div class="title">Tests backend</div><div class="muted">Lance les tests YouTube Data, Analytics token et Claude.</div><div class="row" style="margin-top:14px"><button class="secondary" onclick="runTests()">Tester les APIs</button><button class="ghost" onclick="clearLogs()">Vider logs</button></div></div>
+        <div class="card span8"><div class="title">Logs</div><div id="logs" class="mono">Aucun test lancé.</div></div>
+      </div>
+    </section>
+
+    <section id="tab-settings" class="tab-panel">
+      <div class="grid">
+        <div class="card span6"><div class="title">Variables Vercel nécessaires</div><div class="mono">ADMIN_PASSWORD=mot_de_passe_admin
+YOUTUBE_API_KEY=clé_data_api
+GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=secret_google
+YOUTUBE_REFRESH_TOKEN=refresh_token_oauth
+YOUTUBE_CONTENT_OWNER_ID=valeur_o_YouTube_Content_Manager
+ANTHROPIC_API_KEY=sk-ant-...
+ALLOWED_ORIGINS=https://ton-site.vercel.app,http://localhost:3000
+SUPABASE_URL=https://xxxxx.supabase.co
+SUPABASE_ANON_KEY=ey...
+SUPABASE_SERVICE_ROLE_KEY=ey...</div></div>
+        <div class="card span6"><div class="title">Maintenance</div><div class="muted">Pour modifier le dashboard : remplace <b>public/index.html</b>, commit sur GitHub, Vercel redéploie avec le même domaine. Pour modifier la console : remplace <b>public/admin.html</b>. Les fonctions backend sont dans <b>api/[...path].js</b>.</div></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/js/admin/admin-app.js"></script>
+</body>
+</html>

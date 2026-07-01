@@ -1,0 +1,10 @@
+/* Visual restore layer: keeps the pre-rebuild professional dashboard density. */
+@media (min-width: 769px){
+  .ftv-main-tabs{min-height:54px!important}
+  .ftv-main-tabs button{border-radius:999px!important;font-weight:800!important}
+  .ftv-main-tabs button.active,.ftv-main-tabs button[aria-selected="true"]{background:#0b1220!important;color:#fff!important}
+  .ftv-main-kpis,.ftv-summary-cards{padding-top:8px!important;padding-bottom:8px!important}
+  .ftv-main-content{min-height:0!important}
+  .ftv-detail-header,.ftv-sport-detail-head{min-height:54px!important;padding:10px 18px!important}
+  .ftv-video-row{min-height:31px!important}
+}

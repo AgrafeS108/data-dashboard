@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Récupère toutes les vidéos publiques d’une chaîne YouTube, sélectionne-les et exporte leurs métadonnées dans Excel." />
+  <title>YouTube Channel Data Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="#" class="brand" aria-label="Accueil">
+      <span class="brand-icon">▶</span>
+      <span>YT Channel Viewer</span>
+    </a>
+    <nav>
+      <a href="#analyser">Importer une chaîne</a>
+      <a href="#resultats">Vidéos</a>
+      <button id="themeButton" class="icon-button" type="button" title="Changer de thème" aria-label="Changer de thème">◐</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="analyser">
+      <div class="eyebrow">YOUTUBE DATA API V3</div>
+      <h1>Toute une chaîne.<br /><span>Un seul lien.</span></h1>
+      <p>Colle l’URL d’une chaîne YouTube. L’application récupère toutes ses vidéos publiques, te laisse choisir celles qui t’intéressent et exporte uniquement ta sélection dans un vrai fichier Excel.</p>
+
+      <div class="input-card">
+        <div class="input-card-head">
+          <div>
+            <h2>URL de la chaîne</h2>
+            <p>Compatible avec les liens <strong>@handle</strong>, <strong>/channel/UC…</strong>, les anciens liens <strong>/user/</strong> et la plupart des liens personnalisés.</p>
+          </div>
+        </div>
+
+        <div class="channel-input-row">
+          <input id="channelInput" type="url" inputmode="url" autocomplete="url" placeholder="https://www.youtube.com/@francetvsport" />
+          <button id="analyzeButton" class="button primary" type="button">Charger la chaîne</button>
+          <button id="cancelButton" class="button secondary" type="button" hidden>Arrêter</button>
+        </div>
+
+        <div class="input-hints">
+          <span>Exemple : youtube.com/@nomdelachaine</span>
+          <span>•</span>
+          <span>Vidéos, Shorts et lives publics inclus</span>
+        </div>
+
+        <div id="progressArea" class="progress-area" hidden>
+          <div class="progress-label">
+            <span id="progressText">Préparation…</span>
+            <strong id="progressPercent">0 %</strong>
+          </div>
+          <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        </div>
+        <div id="errorBox" class="message error" hidden></div>
+      </div>
+    </section>
+
+    <section class="results-section" id="resultats" hidden>
+      <article class="channel-card">
+        <img id="channelThumbnail" class="channel-thumbnail" alt="" />
+        <div class="channel-main">
+          <div class="eyebrow">CHAÎNE CHARGÉE</div>
+          <h2 id="channelTitle">—</h2>
+          <p id="channelHandle">—</p>
+        </div>
+        <div class="channel-stats">
+          <div><strong id="channelSubscribers">—</strong><span>Abonnés</span></div>
+          <div><strong id="channelVideoCount">—</strong><span>Vidéos publiques</span></div>
+          <div><strong id="channelViews">—</strong><span>Vues chaîne</span></div>
+        </div>
+        <a id="channelLink" class="button secondary channel-link" href="#" target="_blank" rel="noopener">Voir la chaîne ↗</a>
+      </article>
+
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">VIDÉOS DE LA CHAÎNE</div>
+          <h2>Choisis les vidéos à exporter</h2>
+          <p id="loadSummary" class="section-subtitle"></p>
+        </div>
+        <button id="exportExcelButton" class="button excel-button" type="button" disabled>Exporter la sélection en Excel</button>
+      </div>
+
+      <div class="summary-grid">
+        <article class="summary-card"><span>Vidéos chargées</span><strong id="summaryFound">0</strong></article>
+        <article class="summary-card"><span>Vues cumulées</span><strong id="summaryViews">0</strong></article>
+        <article class="summary-card"><span>Likes cumulés</span><strong id="summaryLikes">0</strong></article>
+        <article class="summary-card selected-summary"><span>Vidéos sélectionnées</span><strong id="summarySelected">0</strong></article>
+      </div>
+
+      <div id="missingBox" class="message warning" hidden></div>
+
+      <div class="selection-toolbar">
+        <div class="selection-status"><strong id="selectionCount">0</strong> vidéo sélectionnée</div>
+        <div class="selection-actions">
+          <button id="selectPageButton" class="button secondary small" type="button">Sélectionner la page</button>
+          <button id="selectFilteredButton" class="button secondary small" type="button">Sélectionner les résultats filtrés</button>
+          <button id="clearSelectionButton" class="button ghost small" type="button">Tout désélectionner</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input id="searchInput" type="search" placeholder="Rechercher un titre, un ID ou un tag…" />
+        <select id="sortSelect" aria-label="Trier les résultats">
+          <option value="upload-order">Ordre de publication YouTube</option>
+          <option value="views-desc">Vues décroissantes</option>
+          <option value="likes-desc">Likes décroissants</option>
+          <option value="date-desc">Plus récentes</option>
+          <option value="date-asc">Plus anciennes</option>
+        </select>
+        <select id="pageSizeSelect" aria-label="Nombre de résultats par page">
+          <option value="12">12 par page</option>
+          <option value="24" selected>24 par page</option>
+          <option value="50">50 par page</option>
+          <option value="100">100 par page</option>
+        </select>
+      </div>
+
+      <div id="videoGrid" class="video-grid"></div>
+
+      <div class="pagination">
+        <button id="prevButton" class="button secondary" type="button">Précédent</button>
+        <span id="pageLabel">Page 1 / 1</span>
+        <button id="nextButton" class="button secondary" type="button">Suivant</button>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <button id="closeDialogButton" class="dialog-close" type="button" aria-label="Fermer">×</button>
+    <div id="detailContent"></div>
+  </dialog>
+
+  <footer>
+    <span>YT Channel Viewer</span>
+    <span>Données publiques fournies par YouTube Data API v3.</span>
+  </footer>
+
+  <script src="/vendor/exceljs.min.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

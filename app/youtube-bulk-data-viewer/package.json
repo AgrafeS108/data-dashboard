@@ -1,0 +1,19 @@
+{
+  "name": "youtube-channel-data-viewer",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Charge toutes les vidéos publiques d'une chaîne YouTube et exporte une sélection en Excel",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "check": "node --check server.js && node --check api/videos.js && node --check api/channel/resolve.js && node --check api/channel/videos.js && node --check lib/youtube.js && node --check public/app.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}

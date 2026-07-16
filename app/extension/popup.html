@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YT Pré-roll Collector</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">▶</div>
+    <div><h1>YT Pré-roll Collector <small>v1.3.0</small></h1><p>Un nouvel onglet par vidéo</p></div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. Importer la file</h2>
+      <p>Le premier JSON contient uniquement les vidéos à tester. Les marques apparaîtront dans le JSON de résultats après la collecte.</p>
+      <label class="file-button">Importer la file JSON<input id="queueFile" type="file" accept="application/json,.json" /></label>
+      <div id="queueSummary" class="summary">Aucune vidéo chargée</div>
+    </section>
+
+    <section class="card">
+      <h2>2. Réglages du test</h2>
+      <div class="grid">
+        <label class="wide"><span>Contexte YouTube</span>
+          <select id="sessionMode">
+            <option value="incognito-tabs">Navigation privée sans compte + nouvel onglet par vidéo</option>
+            <option value="standard-tabs">Fenêtre standard + nouvel onglet par vidéo</option>
+          </select>
+        </label>
+        <div class="wide incognito-panel" id="incognitoPanel">
+          <div>
+            <strong id="incognitoStatus">Vérification de l’accès privé…</strong>
+            <span>Chrome doit autoriser cette extension en navigation privée. Ferme aussi tes autres fenêtres privées avant le lancement.</span>
+          </div>
+          <button id="openExtensionSettingsButton" type="button">Ouvrir les réglages</button>
+        </div>
+        <label class="wide"><span>Affichage de la fenêtre</span>
+          <select id="collectorMode">
+            <option value="background">Ouverture brève, puis retour en arrière-plan</option>
+            <option value="visible">Fenêtre visible pendant tout le test</option>
+          </select>
+        </label>
+        <label><span>Temps maximal par vidéo</span><input id="detectTimeout" type="number" min="8" max="120" value="30" /></label>
+        <label><span>Pause entre vidéos</span><input id="betweenVideos" type="number" min="0" max="30" value="2" /></label>
+        <label class="wide"><span>Pays / localisation</span><input id="location" type="text" value="France" /></label>
+        <label class="check wide"><input id="mutePlayback" type="checkbox" checked /><span>Lire les vidéos sans son</span></label>
+        <label class="check wide"><input id="saveScreenshots" type="checkbox" checked /><span>Enregistrer une capture lorsqu’une publicité est détectée</span></label>
+        <label class="check wide"><input id="closeWindow" type="checkbox" checked /><span>Fermer la fenêtre dédiée à la fin de la file</span></label>
+      </div>
+      <p class="notice">La version 1.3 ne passe plus directement d’une vidéo à l’autre dans le même onglet. Chaque test crée un nouvel onglet YouTube, puis le ferme dès que la publicité est terminée ou que le délai est atteint. Le mode privé utilise une fenêtre sans compte Google ; il ne garantit toutefois pas qu’une publicité sera disponible à chaque lecture.</p>
+    </section>
+
+    <section class="card controls">
+      <div id="status" class="status">Prêt</div>
+      <div id="pageStatus" class="page-status">Aucune page de collecte ouverte</div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div id="progressLabel" class="progress-label">0 / 0</div>
+      <div class="actions">
+        <button id="startButton" class="primary">Démarrer</button>
+        <button id="pauseButton">Pause</button>
+        <button id="resumeButton">Reprendre</button>
+      </div>
+      <button id="openCollectorButton" class="wide-button">Afficher la fenêtre de collecte</button>
+      <details class="diagnostics">
+        <summary>Diagnostic</summary>
+        <div id="currentUrl" class="mono"></div>
+        <div id="logs" class="logs"></div>
+      </details>
+    </section>
+
+    <section class="card">
+      <div class="section-row"><h2>3. Résultats</h2><strong id="resultCount">0</strong></div>
+      <div id="results" class="results"></div>
+      <div class="actions stacked">
+        <button id="exportButton" class="primary">Exporter le fichier RÉSULTATS JSON</button>
+        <button id="clearButton" class="danger">Effacer les résultats</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

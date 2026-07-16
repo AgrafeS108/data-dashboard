@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YT Pré-roll Collector</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">▶</div>
+    <div><h1>YT Pré-roll Collector <small>v1.2.0</small></h1><p>Collecte par observation réelle</p></div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. Importer la file</h2>
+      <p>Le premier JSON contient uniquement les vidéos à tester. Les marques apparaîtront dans le JSON de résultats après la collecte.</p>
+      <label class="file-button">Importer la file JSON<input id="queueFile" type="file" accept="application/json,.json" /></label>
+      <div id="queueSummary" class="summary">Aucune vidéo chargée</div>
+    </section>
+
+    <section class="card">
+      <h2>2. Réglages du test</h2>
+      <div class="grid">
+        <label class="wide"><span>Mode d’ouverture</span>
+          <select id="collectorMode">
+            <option value="background">Fenêtre dédiée, puis retour en arrière-plan</option>
+            <option value="visible">Fenêtre dédiée visible pendant tout le test</option>
+          </select>
+        </label>
+        <label><span>Temps maximal par vidéo</span><input id="detectTimeout" type="number" min="8" max="120" value="30" /></label>
+        <label><span>Pause entre vidéos</span><input id="betweenVideos" type="number" min="0" max="30" value="2" /></label>
+        <label class="wide"><span>Pays / localisation</span><input id="location" type="text" value="France" /></label>
+        <label class="check wide"><input id="mutePlayback" type="checkbox" checked /><span>Lire les vidéos sans son</span></label>
+        <label class="check wide"><input id="saveScreenshots" type="checkbox" checked /><span>Enregistrer une capture lorsqu’une publicité est détectée</span></label>
+        <label class="check wide"><input id="closeWindow" type="checkbox" checked /><span>Fermer la fenêtre dédiée à la fin</span></label>
+      </div>
+      <p class="notice">Le mode arrière-plan ouvre d’abord réellement YouTube au premier plan pendant environ 1 seconde, puis replace ta fenêtre principale devant. C’est nécessaire pour déclencher correctement la lecture et la détection. YouTube peut malgré tout demander un consentement, désactiver les publicités ou afficher une vérification.</p>
+    </section>
+
+    <section class="card controls">
+      <div id="status" class="status">Prêt</div>
+      <div id="pageStatus" class="page-status">Aucune page de collecte ouverte</div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div id="progressLabel" class="progress-label">0 / 0</div>
+      <div class="actions">
+        <button id="startButton" class="primary">Démarrer</button>
+        <button id="pauseButton">Pause</button>
+        <button id="resumeButton">Reprendre</button>
+      </div>
+      <button id="openCollectorButton" class="wide-button">Afficher la fenêtre de collecte</button>
+      <details class="diagnostics">
+        <summary>Diagnostic</summary>
+        <div id="currentUrl" class="mono"></div>
+        <div id="logs" class="logs"></div>
+      </details>
+    </section>
+
+    <section class="card">
+      <div class="section-row"><h2>3. Résultats</h2><strong id="resultCount">0</strong></div>
+      <div id="results" class="results"></div>
+      <div class="actions stacked">
+        <button id="exportButton" class="primary">Exporter le fichier RÉSULTATS JSON</button>
+        <button id="clearButton" class="danger">Effacer les résultats</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

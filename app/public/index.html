@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Récupère les vidéos publiques d’une chaîne YouTube sur une période choisie, sélectionne-les et exporte les métadonnées voulues dans Excel." />
+  <title>YouTube Channel Data Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/app.css?v=5.2.0" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="#" class="brand" aria-label="Accueil">
+      <span class="brand-icon">▶</span>
+      <span>YT Channel Viewer</span>
+    </a>
+    <nav>
+      <a href="#analyser">Importer une chaîne</a>
+      <a href="#resultats">Vidéos</a>
+      <button id="themeButton" class="icon-button" type="button" title="Changer de thème" aria-label="Changer de thème">◐</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="analyser">
+      <div class="eyebrow">YOUTUBE DATA API V3</div>
+      <h1>Toute une chaîne.<br /><span>Sur la période utile.</span></h1>
+      <p>Colle l’URL d’une chaîne YouTube, fixe une période et un plafond avant le chargement, puis exporte uniquement les vidéos et les colonnes dont tu as besoin.</p>
+
+      <div class="input-card">
+        <div class="input-card-head">
+          <div>
+            <h2>URL de la chaîne</h2>
+            <p>Compatible avec les liens <strong>@handle</strong>, <strong>/channel/UC…</strong>, les anciens liens <strong>/user/</strong> et la plupart des liens personnalisés.</p>
+          </div>
+        </div>
+
+        <div class="channel-input-row">
+          <input id="channelInput" type="url" inputmode="url" autocomplete="url" placeholder="https://www.youtube.com/@francetvsport" />
+          <button id="analyzeButton" class="button primary" type="button">Charger la chaîne</button>
+          <button id="cancelButton" class="button secondary" type="button" hidden>Arrêter</button>
+        </div>
+
+        <div class="load-scope" aria-labelledby="loadScopeTitle">
+          <div class="load-scope-head">
+            <div>
+              <h3 id="loadScopeTitle">Cadrer le chargement avant de commencer</h3>
+              <p>La période est appliquée pendant la récupération. Le plafond arrête automatiquement le chargement dès qu’il est atteint.</p>
+            </div>
+            <button id="resetScopeButton" class="button ghost small" type="button">Réinitialiser</button>
+          </div>
+          <div class="scope-grid">
+            <label>
+              <span>Du</span>
+              <input id="startDateInput" type="date" />
+            </label>
+            <label>
+              <span>Au</span>
+              <input id="endDateInput" type="date" />
+            </label>
+            <label>
+              <span>Maximum de vidéos</span>
+              <input id="maxVideosInput" type="number" min="1" max="10000" step="1" value="500" inputmode="numeric" />
+            </label>
+          </div>
+          <p class="scope-note">Laisse une date vide pour ne pas limiter ce côté de la période. Laisse le maximum vide pour charger toute la période.</p>
+        </div>
+
+        <div class="input-hints">
+          <span>Exemple : youtube.com/@nomdelachaine</span>
+          <span>•</span>
+          <span>Vidéos, Shorts et lives publics inclus</span>
+        </div>
+
+        <div id="progressArea" class="progress-area" hidden>
+          <div class="progress-label">
+            <span id="progressText">Préparation…</span>
+            <strong id="progressPercent">0 %</strong>
+          </div>
+          <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        </div>
+        <div id="errorBox" class="message error" hidden></div>
+      </div>
+    </section>
+
+    <section class="results-section" id="resultats" hidden>
+      <article class="channel-card">
+        <img id="channelThumbnail" class="channel-thumbnail" alt="" />
+        <div class="channel-main">
+          <div class="eyebrow">CHAÎNE CHARGÉE</div>
+          <h2 id="channelTitle">—</h2>
+          <p id="channelHandle">—</p>
+        </div>
+        <div class="channel-stats">
+          <div><strong id="channelSubscribers">—</strong><span>Abonnés</span></div>
+          <div><strong id="channelVideoCount">—</strong><span>Vidéos publiques</span></div>
+          <div><strong id="channelViews">—</strong><span>Vues chaîne</span></div>
+        </div>
+        <a id="channelLink" class="button secondary channel-link" href="#" target="_blank" rel="noopener">Voir la chaîne ↗</a>
+      </article>
+
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">VIDÉOS DE LA CHAÎNE</div>
+          <h2>Choisis les vidéos à exporter</h2>
+          <p id="loadSummary" class="section-subtitle"></p>
+        </div>
+        <div class="export-actions">
+          <button id="openCollectorButton" class="button secondary collector-button" type="button">Collecte pré-roll</button>
+          <button id="chooseColumnsButton" class="button secondary" type="button">Colonnes Excel</button>
+          <button id="exportExcelButton" class="button excel-button" type="button" disabled>Exporter la sélection en Excel</button>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <article class="summary-card"><span>Vidéos chargées</span><strong id="summaryFound">0</strong></article>
+        <article class="summary-card"><span>Vues cumulées</span><strong id="summaryViews">0</strong></article>
+        <article class="summary-card"><span>Likes cumulés</span><strong id="summaryLikes">0</strong></article>
+        <article class="summary-card selected-summary"><span>Vidéos sélectionnées</span><strong id="summarySelected">0</strong></article>
+      </div>
+
+      <div id="missingBox" class="message warning" hidden></div>
+      <div class="message info advertiser-info">
+        <strong>Pré-roll observé :</strong> YouTube ne fournit pas automatiquement cette donnée. Chaque test enregistré est exporté dans une feuille dédiée. Une synthèse recense toutes les marques et entreprises annonceuses avec leur nombre de présences. Les colonnes de la feuille principale restent entièrement personnalisables.
+      </div>
+
+      <div class="selection-toolbar">
+        <div class="selection-status"><strong id="selectionCount">0</strong> vidéo sélectionnée</div>
+        <div class="selection-actions">
+          <button id="selectPageButton" class="button secondary small" type="button">Sélectionner la page</button>
+          <button id="selectFilteredButton" class="button secondary small" type="button">Sélectionner les résultats filtrés</button>
+          <button id="clearSelectionButton" class="button ghost small" type="button">Tout désélectionner</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input id="searchInput" type="search" autocomplete="off" spellcheck="false" placeholder="Rechercher : titre, tags, marque pré-roll, annonceur, lieu…" aria-describedby="searchHelp searchStatus" />
+        <select id="sortSelect" aria-label="Trier les résultats">
+          <option value="upload-order">Ordre de publication YouTube</option>
+          <option value="views-desc">Vues décroissantes</option>
+          <option value="likes-desc">Likes décroissants</option>
+          <option value="date-desc">Plus récentes</option>
+          <option value="date-asc">Plus anciennes</option>
+        </select>
+        <select id="pageSizeSelect" aria-label="Nombre de résultats par page">
+          <option value="12">12 par page</option>
+          <option value="24" selected>24 par page</option>
+          <option value="50">50 par page</option>
+          <option value="100">100 par page</option>
+        </select>
+      </div>
+      <div class="search-feedback">
+        <span id="searchHelp">Plusieurs mots recherchent tous les mots, même s’ils sont répartis entre le titre, les tags, la description, la marque, l’annonceur et les observations pré-roll. Utilise des guillemets pour une expression exacte et <strong>-mot</strong> pour l’exclure.</span>
+        <strong id="searchStatus" aria-live="polite" hidden></strong>
+      </div>
+
+      <div id="videoGrid" class="video-grid"></div>
+
+      <div class="pagination">
+        <button id="prevButton" class="button secondary" type="button">Précédent</button>
+        <span id="pageLabel">Page 1 / 1</span>
+        <button id="nextButton" class="button secondary" type="button">Suivant</button>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="collectorDialog" class="collector-dialog">
+    <div class="collector-dialog-inner">
+      <div class="column-dialog-head">
+        <div>
+          <div class="eyebrow">COLLECTE PRÉ-ROLL</div>
+          <h2>Observer automatiquement les publicités</h2>
+          <p>L’extension ouvre une seule fois chaque vidéo sélectionnée, observe le pré-roll réellement diffusé, estime la marque à partir du texte visible et du domaine de destination, puis te laisse valider les résultats avant import.</p>
+        </div>
+        <button id="closeCollectorDialogButton" class="dialog-close static" type="button" aria-label="Fermer">×</button>
+      </div>
+
+      <div class="collector-steps">
+        <article class="collector-step">
+          <span class="collector-step-number">1</span>
+          <div>
+            <h3>Installer l’extension Chrome</h3>
+            <p>Télécharge l’extension, décompresse-la, ouvre <code>chrome://extensions</code>, active le mode développeur puis choisis « Charger l’extension non empaquetée ».</p>
+            <a id="downloadExtensionLink" class="button secondary" href="/downloads/yt-preroll-collector-extension.zip?v=1.2.0" download>Télécharger l’extension v1.2</a>
+          </div>
+        </article>
+        <article class="collector-step">
+          <span class="collector-step-number">2</span>
+          <div>
+            <h3>Préparer les vidéos choisies</h3>
+            <p>Le fichier contient uniquement les vidéos actuellement sélectionnées dans le dashboard : il ne contient encore aucun annonceur. Les marques sont ajoutées uniquement après l’ouverture réelle des vidéos par l’extension.</p>
+            <button id="exportCollectorQueueButton" class="button primary" type="button" disabled>Télécharger la file de collecte</button>
+          </div>
+        </article>
+        <article class="collector-step">
+          <span class="collector-step-number">3</span>
+          <div>
+            <h3>Importer les résultats</h3>
+            <p>Après la collecte, clique dans l’extension sur « Exporter le fichier RÉSULTATS JSON », puis importe ici ce fichier dont le nom commence par « RESULTATS-PREROLL ». N’importe pas la file de vidéos à tester.</p>
+            <button id="importCollectorResultsButton" class="button secondary" type="button">Importer les résultats JSON</button>
+            <input id="collectorResultsInput" type="file" accept="application/json,.json" hidden />
+          </div>
+        </article>
+      </div>
+      <div class="message warning collector-warning">
+        <strong>Important :</strong> la marque détectée reste une observation liée au profil, au pays et au moment du test. Une confiance faible doit être validée avec la capture enregistrée. L’extension ne boucle pas les lectures et ne garantit pas qu’une publicité sera servie.
+      </div>
+      <div id="collectorMessage" class="message info" hidden></div>
+    </div>
+  </dialog>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <button id="closeDialogButton" class="dialog-close" type="button" aria-label="Fermer">×</button>
+    <div id="detailContent"></div>
+  </dialog>
+
+  <dialog id="columnDialog" class="column-dialog">
+    <div class="column-dialog-inner">
+      <div class="column-dialog-head">
+        <div>
+          <div class="eyebrow">EXPORT EXCEL</div>
+          <h2>Choisir les colonnes</h2>
+          <p>Seules les variables cochées seront présentes dans la feuille « Vidéos sélectionnées ». La date et l’heure de Paris sont disponibles séparément. Deux feuilles supplémentaires recensent toujours les observations pré-roll détaillées et tous les annonceurs avec leur nombre de présences.</p>
+        </div>
+        <button id="closeColumnDialogButton" class="dialog-close static" type="button" aria-label="Fermer">×</button>
+      </div>
+      <div class="column-presets">
+        <button id="essentialColumnsButton" class="button secondary small" type="button">Sélection essentielle</button>
+        <button id="allColumnsButton" class="button secondary small" type="button">Tout sélectionner</button>
+        <button id="clearColumnsButton" class="button ghost small" type="button">Tout retirer</button>
+        <strong id="columnCountLabel">0 colonne</strong>
+      </div>
+      <div id="columnGroups" class="column-groups"></div>
+      <div id="columnError" class="message error" hidden>Sélectionne au moins une colonne.</div>
+      <div class="column-dialog-footer">
+        <button id="cancelColumnsButton" class="button secondary" type="button">Annuler</button>
+        <button id="saveColumnsButton" class="button primary" type="button">Valider les colonnes</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer>
+    <span>YT Channel Viewer</span>
+    <span>Données publiques fournies par YouTube Data API v3.</span>
+  </footer>
+
+  <script src="/assets/vendor/exceljs.min.js"></script>
+  <script type="module" src="/assets/js/app.js?v=5.2.0"></script>
+</body>
+</html>

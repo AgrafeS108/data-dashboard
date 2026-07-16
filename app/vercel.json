@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/channel/resolve",
+      "destination": "/api/resolve-channel"
+    },
+    {
+      "source": "/api/channel/videos",
+      "destination": "/api/channel-videos"
+    }
+  ]
+}
